@@ -11,8 +11,7 @@ export const addMessageAPI = async (message: string) => {
   };
 };
 
-export const likePostAPI = async (postId: number) => {
-  console.log("postId is ", postId);
+export const likePostAPI = async () => {
   await simulateApiDelay(1000);
   return { success: true };
 };

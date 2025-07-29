@@ -8,20 +8,23 @@ export const useOptimisticLikes = (initialPosts: Post[]) => {
 
   const [optimisticPosts, addOptimisticLike] = useOptimistic(
     posts,
-    (state, postId: number) =>
-      state.map((post) =>
-        post.id === postId
-          ? { ...post, likes: post.likes + 1, isLiking: true }
-          : post,
-      ),
+    getTempPosts,
   );
+
+  function getTempPosts(state: Post[], postId: number) {
+    return state.map((post) =>
+      post.id === postId
+        ? { ...post, likes: post.likes + 1, isLiking: true }
+        : post,
+    );
+  }
 
   const handleLikePost = async (postId: number) => {
     startTransition(async () => {
       addOptimisticLike(postId);
 
       try {
-        await likePostAPI(postId);
+        await likePostAPI();
         setPosts((prev) =>
           prev.map((post) =>
             post.id === postId ? { ...post, likes: post.likes + 1 } : post,
