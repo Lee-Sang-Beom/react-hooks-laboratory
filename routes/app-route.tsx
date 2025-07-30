@@ -14,6 +14,13 @@ const router = createBrowserRouter([
         .default,
     }),
   },
+  {
+    path: "/use-transition",
+    lazy: async () => ({
+      Component: (await import("@/pages/transition/transition-page.tsx"))
+        .default,
+    }),
+  },
 ]);
 
 export default router;
