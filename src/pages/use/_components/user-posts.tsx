@@ -1,13 +1,18 @@
 "use client";
 
-import { use, Suspense, useState } from "react";
+import { Suspense, use, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Loader2, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { fetchComments } from "../hooks/api";
-import { useDataContext } from "./data-context";
 import type { Post } from "@/pages/use/types";
+import { useDataContext } from "@/pages/use/hooks/use-data-context.ts";
+import CommentsList from "@/pages/use/_components/comments-list.tsx";
+import {
+  CommentsLoading,
+  PostsLoading,
+} from "@/pages/use/_components/loading.tsx";
 
 interface UserPostsProps {
   userId: number;
@@ -26,8 +31,11 @@ function PostsList({ userId }: { userId: number }) {
   const { getPostsPromise } = useDataContext();
 
   // ✨ 컨텍스트에서 캐시된 Promise 사용 - 무한 재요청 방지
+  // use() 사용과정에서 pending 시 suspense fallback 보여줌 -> 데이터 받으면 실제 ui 구성한다고 리렌더링 일어남
+  // 이 과정에서 캐시를 진행하지않으면 promise객체가 달라서 React가 "새로운 작업"으로 인식
+  // 다시 suspend 발생(suspense의 fallback ui가 출력) -> 또 다른 promise 생성 -> 완료 후 또 suspend -> 무한 반복
+  // 그래서 무한 네트워크 요청
   const posts = use(getPostsPromise(userId));
-
   return (
     <div className="space-y-3">
       <h4 className="font-semibold text-sm flex items-center gap-2">
@@ -44,6 +52,7 @@ function PostsList({ userId }: { userId: number }) {
 
 function PostCard({ post }: { post: Post }) {
   const [showComments, setShowComments] = useState(false);
+
   // 댓글 Promise를 컴포넌트 레벨에서 캐시
   const [commentsPromise, setCommentsPromise] = useState<Promise<any[]> | null>(
     null,
@@ -51,8 +60,9 @@ function PostCard({ post }: { post: Post }) {
 
   const handleToggleComments = () => {
     if (!showComments && !commentsPromise) {
-      // 처음 댓글을 보려고 할 때만 Promise 생성
-      setCommentsPromise(fetchComments(post.id));
+      // 처음 댓글을 보려고 할 때만 Promise 생성 (promise 자체를 저장)
+      const commentsPromise = fetchComments(post.id);
+      setCommentsPromise(commentsPromise);
     }
     setShowComments(!showComments);
   };
@@ -97,53 +107,5 @@ function PostCard({ post }: { post: Post }) {
         )}
       </CardContent>
     </Card>
-  );
-}
-
-// 🟢 Comments를 가져오는 컴포넌트 (use() hook 사용)
-function CommentsList({ promise }: { promise: Promise<any[]> }) {
-  // ✨ 미리 생성된 Promise 사용 - 무한 재요청 방지
-  const comments = use(promise);
-
-  return (
-    <div className="space-y-2">
-      <div className="text-xs font-medium text-gray-700">
-        댓글 {comments.length}개
-      </div>
-      {comments.slice(0, 3).map((comment) => (
-        <div key={comment.id} className="p-2 bg-gray-50 rounded text-xs">
-          <div className="font-medium mb-1">{comment.name}</div>
-          <div className="text-gray-600 text-xs mb-1">{comment.email}</div>
-          <div className="text-gray-700 line-clamp-2">{comment.body}</div>
-        </div>
-      ))}
-      {comments.length > 3 && (
-        <div className="text-xs text-gray-500 text-center">
-          ...그리고 {comments.length - 3}개 더
-        </div>
-      )}
-    </div>
-  );
-}
-
-function PostsLoading() {
-  return (
-    <div className="flex items-center justify-center py-8">
-      <div className="flex items-center gap-2 text-sm text-gray-600">
-        <Loader2 className="w-4 h-4 animate-spin" />
-        게시물을 불러오는 중...
-      </div>
-    </div>
-  );
-}
-
-function CommentsLoading() {
-  return (
-    <div className="flex items-center justify-center py-4">
-      <div className="flex items-center gap-2 text-xs text-gray-600">
-        <Loader2 className="w-3 h-3 animate-spin" />
-        댓글을 불러오는 중...
-      </div>
-    </div>
   );
 }

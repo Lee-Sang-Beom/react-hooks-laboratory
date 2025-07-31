@@ -1,4 +1,3 @@
-// user-list.tsx
 "use client";
 
 import { use } from "react";
@@ -6,16 +5,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { User, Mail, Phone, Globe, MapPin } from "lucide-react";
-import { useDataContext } from "./data-context";
 import { useState } from "react";
 import { UserPosts } from "@/pages/use/_components/user-posts.tsx";
+import { useDataContext } from "@/pages/use/hooks/use-data-context.ts";
 
 // 🟢 use() hook을 사용하는 컴포넌트
 export function UserList() {
   const { usersPromise } = useDataContext();
 
   // ✨ use() hook의 핵심: Promise를 직접 사용!
-  // Suspense 경계 내에서 Promise가 resolve될 때까지 대기
+  // use() Hook이 pending Promise를 만나면 자동으로 컴포넌트를 "suspend"상태로 만듦
+  // 즉, Suspense 경계 내에서 Promise가 resolve될 때까지 자동으로 대기하는 것
   const users = use(usersPromise);
 
   return (
