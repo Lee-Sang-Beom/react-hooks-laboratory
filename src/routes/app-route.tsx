@@ -4,7 +4,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     lazy: async () => ({
-      Component: (await import("@/pages/home-page")).default,
+      Component: (await import("@/pages/home-page.tsx")).default,
     }),
   },
   {
@@ -19,6 +19,12 @@ const router = createBrowserRouter([
     lazy: async () => ({
       Component: (await import("@/pages/transition/transition-page.tsx"))
         .default,
+    }),
+  },
+  {
+    path: "/use-use",
+    lazy: async () => ({
+      Component: (await import("@/pages/use/use-page.tsx")).default,
     }),
   },
 ]);

@@ -15,22 +15,22 @@ interface Props {
 export default function OptimisticCard({ handleCardClick }: Props) {
   return (
     <Card
-      className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-blue-200 group"
+      className="cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-red-200 group"
       onClick={() => handleCardClick("/use-optimistic")}
     >
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-              <Zap className="w-5 h-5 text-blue-600" />
+            <div className="p-2 bg-red-100 rounded-lg group-hover:bg-red-200 transition-colors">
+              <Zap className="w-5 h-5 text-red-600" />
             </div>
             <Badge variant="secondary" className="text-xs">
               React 18+
             </Badge>
           </div>
-          <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
+          <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-red-600 transition-colors" />
         </div>
-        <CardTitle className="text-xl font-semibold text-slate-900 group-hover:text-blue-700 transition-colors">
+        <CardTitle className="text-xl font-semibold text-slate-900 group-hover:text-red-700 transition-colors">
           useOptimistic
         </CardTitle>
         <CardDescription className="text-sm text-slate-600 leading-relaxed">
@@ -57,7 +57,7 @@ export default function OptimisticCard({ handleCardClick }: Props) {
           <Button
             variant="ghost"
             size="sm"
-            className="w-full mt-4 group-hover:bg-blue-50 group-hover:text-blue-700"
+            className="w-full mt-4 group-hover:bg-red-50 group-hover:text-red-700"
           >
             <BookOpen className="w-4 h-4 mr-2" />
             학습하기

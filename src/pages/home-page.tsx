@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import OptimisticCard from "@/pages/_component/optimistic-card.tsx";
 import TransitionCard from "@/pages/_component/transition-card.tsx";
+import UseCard from "@/pages/_component/use-card.tsx";
 import FutureCard from "@/pages/_component/future-card.tsx";
 import HomeFooter from "@/pages/_component/home-footer.tsx";
 import HomeHeader from "@/pages/_component/home-header.tsx";
@@ -24,6 +25,9 @@ export default function HomePage() {
 
           {/* useTransition Hook Card */}
           <TransitionCard handleCardClick={handleCardClick} />
+
+          {/* use Hook Card */}
+          <UseCard handleCardClick={handleCardClick} />
 
           {/* Placeholder Card for Future Hook */}
           <FutureCard />
