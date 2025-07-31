@@ -2,15 +2,21 @@ import { Button } from "@/components/ui/button.tsx";
 import { ArrowLeft, Info, Loader2, RefreshCw, Sparkles } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert.tsx";
 import { useDataContext } from "@/pages/use/hooks/use-data-context.ts";
+import { useNavigate } from "react-router-dom";
 
 export default function IntroduceCard() {
   const { refreshUsers } = useDataContext();
+  const navigator = useNavigate();
+
+  const handleGoBack = () => {
+    navigator("/");
+  };
 
   return (
     <>
       {/* Header */}
       <div className="mb-8">
-        <Button variant="ghost" className="mb-4">
+        <Button variant="ghost" className="mb-4" onClick={handleGoBack}>
           <ArrowLeft className="w-4 h-4 mr-2" />
           돌아가기
         </Button>
