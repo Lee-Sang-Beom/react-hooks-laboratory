@@ -5,6 +5,7 @@ import UseCard from "@/pages/_component/use-card.tsx";
 import FutureCard from "@/pages/_component/future-card.tsx";
 import HomeFooter from "@/pages/_component/home-footer.tsx";
 import HomeHeader from "@/pages/_component/home-header.tsx";
+import UseDeferredValueCard from "@/pages/_component/use-deferred-value-card.tsx";
 
 export default function HomePage() {
   const navigator = useNavigate();
@@ -28,6 +29,9 @@ export default function HomePage() {
 
           {/* use Hook Card */}
           <UseCard handleCardClick={handleCardClick} />
+
+          {/* UseDeferredValue Hook Card */}
+          <UseDeferredValueCard handleCardClick={handleCardClick} />
 
           {/* Placeholder Card for Future Hook */}
           <FutureCard />

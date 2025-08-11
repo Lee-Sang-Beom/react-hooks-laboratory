@@ -27,6 +27,14 @@ const router = createBrowserRouter([
       Component: (await import("@/pages/use/use-page.tsx")).default,
     }),
   },
+  {
+    path: "/use-deferred-value",
+    lazy: async () => ({
+      Component: (
+        await import("@/pages/deferred-value/deferred-value-page.tsx")
+      ).default,
+    }),
+  },
 ]);
 
 export default router;
